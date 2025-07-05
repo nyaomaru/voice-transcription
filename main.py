@@ -1,7 +1,16 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.config import settings
+from app.api import router as api_router
 
-app = FastAPI()
+app = FastAPI(title="Voice Transcription API")
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello, FastAPI!"}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.ALLOW_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(api_router)
