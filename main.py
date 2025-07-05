@@ -1,20 +1,16 @@
-from fastapi import FastAPI, UploadFile, File
-import whisper
-import tempfile
-import shutil
-import os
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.config import settings
+from app.api import router as api_router
 
-app = FastAPI()
-model = whisper.load_model("small.en")
+app = FastAPI(title="Voice Transcription API")
 
-@app.post("/transcribe")
-async def transcribe(file: UploadFile = File(...)):
-    # Save the uploaded file to a temporary location
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-        shutil.copyfileobj(file.file, tmp)
-        tmp_path = tmp.name
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.ALLOW_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    # Transcribe the audio file using Whisper
-    result = model.transcribe(tmp_path)
-    os.remove(tmp_path)  # Clean up the temporary file
-    return {"text": result["text"]}
+app.include_router(api_router)
