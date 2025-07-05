@@ -32,7 +32,9 @@ nvidia-nvjitlink-cu12==12.6.85
 nvidia-nvtx-cu12==12.6.77
 openai-whisper @ git+https://github.com/openai/whisper.git@c0d2f624c09dc18e709e37c2ad90c039a4eb72a2
 pydantic==2.11.7
+pydantic-settings==2.10.1
 pydantic_core==2.33.2
+python-dotenv==1.1.1
 python-multipart==0.0.20
 regex==2024.11.6
 requests==2.32.4
