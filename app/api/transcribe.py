@@ -3,7 +3,7 @@ from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from .deps import get_whisper_model
+from app.deps import get_whisper_model
 
 log = logging.getLogger(__name__)
 router = APIRouter()
