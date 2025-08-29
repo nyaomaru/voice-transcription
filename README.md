@@ -30,6 +30,9 @@ Use uvicorn to run this app.
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
+Uploaded audio files are limited to **10&nbsp;MB**. Larger files will be
+rejected with an HTTP `413 Payload Too Large` response.
+
 ### Curl example
 
 With the server running, you can transcribe an audio file using `curl`:
