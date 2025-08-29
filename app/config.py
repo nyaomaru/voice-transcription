@@ -4,7 +4,7 @@ from typing import List
 
 class Settings(BaseSettings):
     WHISPER_MODEL: str = "small.en"
-    ALLOW_ORIGINS: List[AnyHttpUrl | str] = ["*"]  # Set to ["https://your.vercel.app"] for production
+    ALLOW_ORIGINS: List[AnyHttpUrl | str] = []  # e.g., ["https://your.vercel.app"] in production
 
     class Config:
         env_file = ".env"

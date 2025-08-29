@@ -10,6 +10,18 @@ Setup env file using `.env.sample`
 cp -p .env.sample .env
 ```
 
+### Allowed Origins
+
+By default, no origins are allowed for Cross-Origin Resource Sharing (CORS).
+In production, specify the domains that should be permitted by setting the
+`ALLOW_ORIGINS` environment variable. For example:
+
+```sh
+echo 'ALLOW_ORIGINS=["https://your.vercel.app"]' >> .env
+```
+
+Restart the application after updating the setting.
+
 ## Run
 
 Use uvicorn to run this app.
