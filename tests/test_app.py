@@ -66,3 +66,19 @@ def test_transcribe_unsupported_type():
         asyncio.run(transcribe_api.transcribe(file=upload, model=DummyModel()))
 
     assert exc.value.status_code == 415
+
+
+def test_transcribe_file_too_large():
+    big_bytes = BytesIO(b"0" * (transcribe_api.MAX_UPLOAD_SIZE + 1))
+    upload = UploadFile(
+        filename="big.mp3",
+        file=big_bytes,
+        headers={"content-type": "audio/mpeg"},
+    )
+
+    import pytest
+
+    with pytest.raises(transcribe_api.HTTPException) as exc:
+        asyncio.run(transcribe_api.transcribe(file=upload, model=DummyModel()))
+
+    assert exc.value.status_code == 413
