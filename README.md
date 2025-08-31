@@ -39,7 +39,7 @@ With the server running, you can transcribe an audio file using `curl`:
 
 ```sh
 curl -X 'POST' \
-  'http://localhost:8000/transcribe' \
+  'http://localhost:8000/transcription' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -F 'file=@voice-test.mp3;type=audio/mpeg'
