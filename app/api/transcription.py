@@ -12,12 +12,12 @@ router = APIRouter()
 MAX_UPLOAD_SIZE = 10 * 1024 * 1024
 
 
-class TranscribeResponse(BaseModel):
+class TranscriptionResponse(BaseModel):
     text: str
     duration_ms: int
 
 
-@router.post("/transcribe", response_model=TranscribeResponse)
+@router.post("/transcription", response_model=TranscriptionResponse)
 async def transcribe(
     file: UploadFile = File(...),
     model = Depends(get_whisper_model),

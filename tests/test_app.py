@@ -25,7 +25,7 @@ def _load_model(name: str) -> "DummyModel":
 # Inject a lightweight fake "whisper" module before the application imports it.
 sys.modules["whisper"] = types.SimpleNamespace(load_model=_load_model)
 
-from app.api import transcribe as transcribe_api  # noqa: E402
+from app.api import transcription as transcription_api  # noqa: E402
 from main import health as root_health  # noqa: E402
 
 
@@ -50,12 +50,12 @@ def test_health_route():
     assert root_health() == {"status": "ok"}
 
 
-def test_transcribe_success(upload_factory, dummy_model):
+def test_transcription_success(upload_factory, dummy_model):
     with open("voice-test.mp3", "rb") as f:
         upload = upload_factory(f.read(), "voice-test.mp3", "audio/mpeg")
 
     result = asyncio.run(
-        transcribe_api.transcribe(file=upload, model=dummy_model)
+        transcription_api.transcribe(file=upload, model=dummy_model)
     )
 
     assert result.status_code == 200
@@ -69,19 +69,19 @@ def test_transcribe_success(upload_factory, dummy_model):
     [
         (b"data", "test.txt", "text/plain", 415),
         (
-            b"0" * (transcribe_api.MAX_UPLOAD_SIZE + 1),
+            b"0" * (transcription_api.MAX_UPLOAD_SIZE + 1),
             "big.mp3",
             "audio/mpeg",
             413,
         ),
     ],
 )
-def test_transcribe_invalid_uploads(
+def test_transcription_invalid_uploads(
     data, filename, content_type, expected_status, upload_factory, dummy_model
 ):
     upload = upload_factory(data, filename, content_type)
 
-    with pytest.raises(transcribe_api.HTTPException) as exc:
-        asyncio.run(transcribe_api.transcribe(file=upload, model=dummy_model))
+    with pytest.raises(transcription_api.HTTPException) as exc:
+        asyncio.run(transcription_api.transcribe(file=upload, model=dummy_model))
 
     assert exc.value.status_code == expected_status
